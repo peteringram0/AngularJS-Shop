@@ -1,0 +1,17 @@
+<div class="row">
+
+	<div class="large-12 columns">
+		<div class="panel callout">
+			Total: {{ cost | currency : constants.currency_symbol }}
+		</div>
+	</div>
+
+	<div class="large-12 columns">
+
+		<div ng-repeat="(paymentType,value) in constants.checkout_methods">
+			<div ng-if="value == true" ng-include src=" constants.app_base_url + '/segments/' + paymentType + '.html'"></div>
+		</div>
+
+	</div>
+
+</div>

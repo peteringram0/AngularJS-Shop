@@ -1,0 +1,46 @@
+<div class="row">
+
+	<div class="large-12 columns">
+		<div class="panel">
+			Welcome to your cart.
+		</div>
+	</div>
+
+	<div class="large-12 columns">
+		<table style="width:100%">
+			<thead>
+				<tr>
+					<th width="70%" align="left">Name</th>
+					<th width="20%" align="left">Price</th>
+					<th width="10%" align="left"></th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr ng-repeat="item in cart.contents track by $index">
+					<td align="left">{{ item.name }}</td>
+					<td align="left">{{ item.price | currency : constants.currency_symbol }}</td>
+					<td align="left"><button ng-click="remove(item.id, $index)" class="button tiny radius round alert">Remove</button></td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+
+	<div class="small-12 medium-6 columns">
+		<div class="panel">
+			VAT: {{ vat | currency : constants.currency_symbol }}
+		</div>
+	</div>
+
+	<div class="small-12 medium-6 columns">
+		<div class="panel callout">
+			Total: {{ cost | currency : constants.currency_symbol }}
+		</div>
+	</div>
+
+	<div class="medium-12 columns">
+		<button ng-click="checkoutPage()" ng-class="(cart.count==0) ? 'disabled' : ''" class="button expand success [radius round small]" type="submit">Checkout!</button>
+	</div>
+
+</div>

@@ -1,0 +1,42 @@
+<div class="row">
+	<div class="small-12 columns">
+		<ul class="breadcrumbs">
+		  <li><a href="#/dashboard">Dashboard</a></li>
+		  <li><a href="#/products">Products</a></li>
+		  <li class="current">{{ product.product_name }}</li>
+		</ul>
+	</div>
+</div>
+
+<div class="row">
+
+	<div class="medium-6 columns">
+		<div class="panel show-for-medium-up">
+			<img height="100%" width="100%" src="{{ constants.app_base_url }}/images/products/{{ product.product_id }}.jpg" />
+		</div>
+	</div>
+
+	<div class="medium-6 columns">
+		<div class="panel">
+			<h3>{{ product.product_name }}</h3>
+		</div>
+	</div>
+
+	<div class="medium-6 columns">
+		<div class="panel" style="text-align:left;">
+			{{ product.product_long_desc }}
+		</div>
+	</div>
+
+	<div class="small-12 medium-12 large-6 columns">
+		<div class="panel">
+			{{ product.product_price | currency : constants.currency_symbol }} {{ product.product_payment }}
+		</div>
+	</div>
+
+	<div class="small-12 medium-12 large-6 columns">
+		<button ng-click="addToCart(product.product_id)" class="button expand success [radius round small]">Add To My Cart</button>
+		<button class="button expand [radius round small]">Add To A Friends Cart</button>
+	</div>
+
+</div>

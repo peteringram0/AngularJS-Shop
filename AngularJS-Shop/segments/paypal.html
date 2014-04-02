@@ -1,0 +1,19 @@
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+
+	<input type="hidden" name="cmd" value="_cart">
+	<input type="hidden" name="upload" value="1">
+
+	<input type="hidden" name="business" value="{{ constants.paypal_config.email }}">
+	<input type="hidden" name="currency_code" value="{{ constants.paypal_config.currency_code }}">
+	
+	<div ng-repeat="itemz in cart.contents track by $index">
+		<input type="hidden" name="item_name_{{$index + 1}}" value="{{itemz.name}}" />
+		<input type="hidden" name="amount_{{$index + 1}}" value="{{itemz.price}}" />
+	</div>
+
+	<input type="hidden" name="return" value="{{ constants.app_url }}">
+	<input type="hidden" name="cancel_return" value="{{ constants.app_url }}">
+	<input type="hidden" name="notify_url" value="{{ constants.app_url }}">
+
+	<input type="submit" value="Checkout Using PayPal!" class="button expand success [radius round small]" />
+</form>
