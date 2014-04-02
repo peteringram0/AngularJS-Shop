@@ -13,4 +13,6 @@ Due to the growing popularity in AngualrJS i have decided to start this project.
 
 This project is currently in beta stages. Anyone who wishes to contribute to this project is very welcome.
 
-![alt tag](https://github.com/peteringram0/AngularJS-Shop/blob/master/screenshots/cart-page.jpg)
+![alt tag](https://raw.githubusercontent.com/peteringram0/AngularJS-Shop/master/screenshots/cart-page.jpg)
+![alt tag](https://raw.githubusercontent.com/peteringram0/AngularJS-Shop/master/screenshots/products-page.jpg)
+![alt tag](https://raw.githubusercontent.com/peteringram0/AngularJS-Shop/master/screenshots/product-page.jpg)
