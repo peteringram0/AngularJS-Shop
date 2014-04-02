@@ -3,7 +3,7 @@ AngularJS-Shop
 
 This is an independent plugin for AngularJS that adds shop and cart functionality to an existing AngularJS application. This plugin is based on AngularJS & Foundation CSS.
 
-Requirments:
+<b>Requirments:</b>
   - AngualrJS v1.2.15 (http://angularjs.org/)
   - Zurb Foundation v5 (http://foundation.zurb.com)
 
