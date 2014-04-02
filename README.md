@@ -9,9 +9,11 @@ This is an independent plugin for AngularJS that adds shop and cart functionalit
   <li>Zurb Foundation v5 (http://foundation.zurb.com)</li>
 </ul>
 
-Due to the growing popularity in AngualrJS i have decided to start this project. This project will aim to create a plugin that can be included in any existing angularJS applicatio providing shop functionality.
+Due to the growing popularity in AngualrJS i have decided to start this project. This project will aim to create a plugin that can be included in any existing angularJS application providing shop functionality. The aim of this project is to create shop and cart functionality with the smallest footprint possible and with no dependencies outside this plugin.
 
-This project is currently in beta stages. Anyone who wishes to contribute to this project is very welcome.
+<h3>This plugin is under development and should not be used in any production applications</h3>
+
+Anyone who wishes to contribute to this project is very welcome.
 
 <br/>
 <hr>
@@ -20,7 +22,7 @@ This project is currently in beta stages. Anyone who wishes to contribute to thi
 
 <ul>
 	<li>Create a new directory called "packages" into the root of the your application</li>
-	<li>Include the AngularJS-Shop.js script in your HTML markup<code>script src="packages/AngularJS-Shop/AngularJS-Shop.js" type="text/javascript"> /script></code></li>
+	<li>Include the AngularJS-Shop.js script in your HTML markup<code>< script src="packages/AngularJS-Shop/AngularJS-Shop.js" type="text/javascript"> < /script></code></li>
 	<li>Include the shop in your AngualrJS application <code>var app = angular.module('app', ["shop"]);</code></li>
 	<li>Open AngualrJS-shop.js and edit the settings as per the file</li>
 </ul>
