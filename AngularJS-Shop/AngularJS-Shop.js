@@ -3,49 +3,17 @@
  * Created By Peter Ingram
  * peter.ingram0@gmail.com
  *
- * Version: 0.0.1 02/04/2014
+ * Version: 0.0.2 04/04/2014
  * License: MIT
  */
 
 (function (document, window) {
     'use strict';
-    var shop = angular.module('shop', []);
+    var shop = angular.module('shop', ["shopConfig"]);
 
-    // Application settings
-    shop.constant('constants', {
-
-      /* The URL of your application */
-      app_url : "http://localhost/nutrin/public/#dashboard",
-
-      /* This is the base URL of the pi-shop package within your AngaulrJS application */
-      app_base_url : "http://localhost/nutrin/public/packages/AngularJS-Shop",
-
-      /* This is the location of the products, can be JSON file or RESTFULL API url
-       - "http://localhost/nutrin/public/products" */
-      products_json : "http://localhost/nutrin/public/packages/AngularJS-Shop/demo-products.json",
-      
-      /* This symbol will be displayed next to the prices on shop and checkout pages */
-      currency_symbol : "£",
-
-      /* The VAT amount for your country, please enter to two decimal places  */
-      VAT_amount : 20.00,
-
-      /* Two VAT types are supported inclusive or  exclusive.
-      Inclusive means that you have added VAT to the product price already
-      Exclusive means that the product prices are not including the VAT so the system should add the VAT to the total cost*/
-      VAT_type : "exclusive",
-
-      /* Checkout methods. Currantly only paypal is supported, true should be lowercase */
-      checkout_methods : { 'paypal' : true },
-
-      /* If you have paypal set as true please enter the details below */
-      paypal_config : { "email" : "peter.ingram0@gmail.com", "currency_code" : "GBP" }
-    
-    });
-
-
-    shop.run(function ($rootScope, constants) {
+    shop.run(function ($rootScope, constants,userFactory) {
       $rootScope.constants = constants; // Lets make these settings system wide
+      userFactory.getUserDetails().then(function(){ }); // Loads the users data into the factory
     });
 
     shop.config(['$routeProvider', function($routeProvider,constants){
@@ -71,6 +39,43 @@
             private  : true
         });
     }]);
+
+    shop.controller("shopController",function($scope,userFactory){
+
+    });
+
+    shop.factory("userFactory",function($q,$http,constants){
+      
+      var factory = {};
+        factory.userdetails = {};
+
+      return{
+        userDetails : function(){
+            var deferred = $q.defer();
+            var products = $http.post(constants.user_json);
+            products.success(function(data){
+              deferred.resolve(data);
+              factory.userdetails = data;
+            });
+            products.error(function(){
+              console.log("Error Getting Customer Details");
+            });
+            return deferred.promise;
+          },
+          getUserDetails : function(){
+            var deferred = $q.defer();
+              if(Object.keys(factory.userdetails).length === 0){
+                this.userDetails().then(function(data){
+                  deferred.resolve(data);
+              });
+              }
+              else{
+                deferred.resolve(factory.userdetails);
+              }
+              return deferred.promise;
+          }
+        }
+    });
 
     shop.factory('piCartFactory', function($rootScope,ProductsFactory){
         var store = {};
@@ -131,7 +136,7 @@
 
     });
 
-    shop.factory('ProductsFactory',function($http,$q,AlertsFactory,constants){
+    shop.factory('ProductsFactory',function($http,$q,constants,hocks){
   
       var factory = {}; 
         factory.details = {};
@@ -140,10 +145,10 @@
         loadProducts: function(){
           var deferred = $q.defer();
           if(Object.keys(factory.details).length === 0){
-            AlertsFactory.StartLoading();
+            hocks.showLoading();
             this.getAll().then(function(data){
               deferred.resolve(data);
-              AlertsFactory.StopLoading();
+              hocks.hideLoading();
             });
           }
           else{
@@ -166,13 +171,13 @@
       }
     });
 
-    shop.controller("CartController",function($scope,$rootScope,piCartFactory,constants,helpers,AlertsFactory,$location){
+    shop.controller("CartController",function($scope,$rootScope,piCartFactory,constants,helpers,$location,hocks){
 
       $scope.constants = $rootScope.constants;
 
       $scope.remove = function(id, index){
           $scope.cart = piCartFactory.remove(id, index);
-          AlertsFactory.add('info','Item removed from your cart');
+          hocks.myAlert('info','Item removed from your cart');
       };
       $scope.cart = piCartFactory.get();
 
@@ -202,13 +207,9 @@
 
     });
 
-    shop.controller('ProductController',function($rootScope,$scope,AlertsFactory,ProductsFactory,$routeParams,piCartFactory,UserInfoFactory){
+    shop.controller('ProductController',function($rootScope,$scope,hocks,ProductsFactory,$routeParams,piCartFactory){
 
       $scope.constants = $rootScope.constants;
-
-      UserInfoFactory.load().then(function(data){
-        $scope.userDetails = data;
-      });
 
       var productID = $routeParams.productId;
 
@@ -218,7 +219,7 @@
 
       $scope.addToCart = function(id){
         piCartFactory.add({id : id, email: $scope.userDetails.email, product_name : $scope.product.product_name, product_price : $scope.product.product_price });
-        AlertsFactory.add('success','Item added to your cart.');
+        hocks.myAlert('success','Item added to your cart.')
       };
 
     });
