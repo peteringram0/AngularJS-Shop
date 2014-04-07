@@ -3,6 +3,8 @@ AngularJS-Shop
 
 This is an independent plugin for AngularJS that adds shop and cart functionality to an existing AngularJS application. This plugin is based on AngularJS & Foundation CSS.
 
+<h3><a href="http://162.243.14.142/dev/public/#/products">Demo Here</a></h3>
+
 <b>Requirments:</b>
 <ul>
   <li>AngualrJS v1.2.15 (http://angularjs.org/)</li>
