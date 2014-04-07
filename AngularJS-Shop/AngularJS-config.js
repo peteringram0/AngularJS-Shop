@@ -6,9 +6,6 @@
     // Application settings
     shopConfig.constant('constants', {
 
-      /* The URL of your application */
-      app_url : "http://localhost/nutrin/public/#dashboard",
-
       /* This is the base URL of the pi-shop package within your AngaulrJS application */
       app_base_url : "http://localhost/nutrin/public/packages/AngularJS-Shop",
 
@@ -34,7 +31,11 @@
       checkout_methods : { 'paypal' : true },
 
       /* If you have paypal set as true please enter the details below */
-      paypal_config : { "email" : "peter.ingram0@gmail.com", "currency_code" : "GBP" }
+      paypal_config : { "email" : "peter.ingram0@gmail.com",
+                        "currency_code" : "GBP",
+                        "IPN_ReturnScriptUrl" : "http://162.243.14.142/dev/public/paypalipn",
+                        "return" : "http://162.243.14.142/dev/public/#/products?&return=TRUE",
+                        "cancel_return" : "http://162.243.14.142/dev/public/#/products?&cancel_return=TRUE" }
     
     });
 

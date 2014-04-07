@@ -9,11 +9,12 @@
 	<div ng-repeat="itemz in cart.contents track by $index">
 		<input type="hidden" name="item_name_{{$index + 1}}" value="{{itemz.name}}" />
 		<input type="hidden" name="amount_{{$index + 1}}" value="{{itemz.price}}" />
+		<input type="hidden" name="tax_{{$index + 1}}" value="{{itemz.price/100*constants.VAT_amount}}" />
 	</div>
-
+	
 	<input type="hidden" name="return" value="{{ constants.app_url }}">
 	<input type="hidden" name="cancel_return" value="{{ constants.app_url }}">
-	<input type="hidden" name="notify_url" value="{{ constants.app_url }}">
+	<input type="hidden" name="notify_url" value="http://162.243.14.142/dev/public/paypalipn">
 
 	<input type="submit" value="Checkout Using PayPal!" class="button expand success [radius round small]" />
 </form>
