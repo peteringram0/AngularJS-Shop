@@ -3,7 +3,6 @@
  * Created By Peter Ingram
  * peter.ingram0@gmail.com
  *
- * Version: 0.0.2 04/04/2014
  * License: MIT
  */
 
@@ -11,27 +10,26 @@
     'use strict';
     var shop = angular.module('shop', ["shopConfig"]);
 
-    shop.run(function ($rootScope, constants,userFactory) {
+    shop.run(function ($rootScope, constants) {
       $rootScope.constants = constants; // Lets make these settings system wide
-      userFactory.getUserDetails().then(function(){ }); // Loads the users data into the factory
     });
 
-    shop.config(['$routeProvider', function($routeProvider,constants){
+    shop.config(['$routeProvider', function($routeProvider){
     	$routeProvider.
 	    	when('/cart', {
 		        controller: 'CartController',
             templateUrl: "packages/AngularJS-Shop/segments/cart.html",
-		        private : true
+		        private : false
 	    	}).
         when('/products', {
             templateUrl: "packages/AngularJS-Shop/segments/products.html",
             controller: 'ProductsController',
-            private  : true
+            private  : false
         }).
         when('/product/:productId', {
             templateUrl: "packages/AngularJS-Shop/segments/product.html",
             controller: 'ProductController',
-            private  : true
+            private  : false
         }).
         when('/checkout', {
             controller: 'CartController',
@@ -40,7 +38,7 @@
         });
     }]);
 
-    shop.controller("shopController",function($scope,userFactory){
+    shop.controller("shopController",function($scope){
 
     });
 
@@ -52,27 +50,28 @@
       return{
         userDetails : function(){
             var deferred = $q.defer();
-            var products = $http.post(constants.user_json);
-            products.success(function(data){
+            var user = $http.post(constants.user_json);
+            user.success(function(data){
               deferred.resolve(data);
               factory.userdetails = data;
             });
-            products.error(function(){
+            user.error(function(){
               console.log("Error Getting Customer Details");
+              deferred.resolve(false);
             });
             return deferred.promise;
           },
           getUserDetails : function(){
             var deferred = $q.defer();
-              if(Object.keys(factory.userdetails).length === 0){
-                this.userDetails().then(function(data){
-                  deferred.resolve(data);
-              });
-              }
-              else{
-                deferred.resolve(factory.userdetails);
-              }
-              return deferred.promise;
+            if(Object.keys(factory.userdetails).length === 0){
+              this.userDetails().then(function(data){
+                deferred.resolve(data);
+            });
+            }
+            else{
+              deferred.resolve(factory.userdetails);
+            }
+            return deferred.promise;
           }
         }
     });
@@ -84,8 +83,7 @@
             add : function(data){
                 var count = store.contents.length;
                 var obj = {"id" : count++,
-                           "productid" : data.id ,
-                           "foruser" : data.foruser,
+                           "productid" : data.id,
                            "name" : ((data.product_name) ? data.product_name : 'TEST PRODUCT'),
                            "price" : ((data.product_price) ? data.product_price : '10.00')};
 
@@ -171,7 +169,7 @@
       }
     });
 
-    shop.controller("CartController",function($scope,$rootScope,piCartFactory,constants,helpers,$location,hocks){
+    shop.controller("CartController",function($scope,$rootScope,piCartFactory,constants,helpers,$location,hocks,userFactory){
 
       $scope.constants = $rootScope.constants;
 
@@ -181,9 +179,25 @@
       };
       $scope.cart = piCartFactory.get();
 
+      /* When this function is triggered, check if the user is logged in if they are not redirect them
+        to the login page, if they are pass them to the checkout route (This runs this same controller) */
       $scope.checkoutPage = function(){
-        $location.path("/checkout/"); 
-      }
+        userFactory.getUserDetails().then(function(data){
+          if(data == false){
+            hocks.myAlert("alert","Please login or signup to checkout");
+            $location.path("/login/");
+          } else{
+            $location.path("/checkout/");
+          }
+        });
+      };
+
+      /* If the user is logged in and we have their data in the factory load it into the scope. */
+      userFactory.getUserDetails().then(function(data){
+        if(data != false){
+          $scope.userData = data;
+        }
+      });
 
       $scope.$on('BroadcastUpdateCartData', function() {
         $scope.vat = helpers.get_cost_and_vat().vat_amount;
@@ -218,7 +232,7 @@
       });
 
       $scope.addToCart = function(id){
-        piCartFactory.add({id : id, email: $scope.userDetails.email, product_name : $scope.product.product_name, product_price : $scope.product.product_price });
+        piCartFactory.add({id : id, product_name : $scope.product.product_name, product_price : $scope.product.product_price });
         hocks.myAlert('success','Item added to your cart.')
       };
 
