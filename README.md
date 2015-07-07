@@ -1,9 +1,9 @@
 AngularJS-Shop
 ==============
 
-This is an independent plugin for AngularJS that adds shop and cart functionality to an existing AngularJS application. This plugin is based on AngularJS & Foundation CSS.
+<h1>--- Depreciate ---</h1>
 
-<h3><a href="http://162.243.14.142/dev/public/#/products">Demo Here</a></h3>
+This is an independent plugin for AngularJS that adds shop and cart functionality to an existing AngularJS application. This plugin is based on AngularJS & Foundation CSS.
 
 <b>Requirments:</b>
 <ul>
